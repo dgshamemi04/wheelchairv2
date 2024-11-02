@@ -42,6 +42,20 @@ function App() {
 
   const mapRef = useRef(null);
 
+  
+   // Update sliderValue from Firebase every second
+   useEffect(() => {
+    const sliderRef = ref(database, 'sliderValue');
+    const unsubscribe = onValue(sliderRef, (snapshot) => {
+      const value = snapshot.val();
+      if (value !== null) {
+        setSliderValue(value);
+      }
+    });
+
+    return () => unsubscribe(); // Clean up the listener on unmount
+  }, [database]);
+
 
   useEffect(() => {
     // Function to check if the user is on a mobile device
